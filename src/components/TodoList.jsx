@@ -1,13 +1,16 @@
 import { useState } from "react";
 
 export default function TodoList({ todos, toggleTodo, deleteTodo, editTodo }) {
+  // Separate active and completed todos
   const activeTodos = todos.filter((todo) => !todo.completed);
   const completedTodos = todos.filter((todo) => todo.completed);
 
+  // Local state for editing
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
   const [editDate, setEditDate] = useState("");
 
+  // Save edited todo
   const handleEdit = (id, text, date) => {
     editTodo(id, text, date);
     setEditingId(null);
@@ -15,11 +18,9 @@ export default function TodoList({ todos, toggleTodo, deleteTodo, editTodo }) {
     setEditDate("");
   };
 
+  // Render individual todo item
   const renderTodo = (todo) => (
-    <li
-      key={todo.id}
-      className={`todo-item ${todo.completed ? "completed" : ""}`}
-    >
+    <li key={todo.id} className={`todo-item ${todo.completed ? "completed" : ""}`}>
       {editingId === todo.id ? (
         <div className="todo-top-line">
           <input
@@ -47,8 +48,8 @@ export default function TodoList({ todos, toggleTodo, deleteTodo, editTodo }) {
       ) : (
         <div className="todo-top-line">
           <span className={`priority-${todo.priority.toLowerCase()}`}>
-            {todo.title} ({todo.priority}){" "}
-            {todo.dueDate && `- Due: ${todo.dueDate}`}
+            {todo.title} ({todo.priority})
+            {todo.dueDate && ` - Due: ${todo.dueDate}`}
           </span>
           <div className="todo-actions-wrapper">
             <div className="todo-actions">
@@ -77,22 +78,10 @@ export default function TodoList({ todos, toggleTodo, deleteTodo, editTodo }) {
   return (
     <div className="todo-list">
       <h3>Active Todos</h3>
-      <ul>
-        {activeTodos.length ? (
-          activeTodos.map(renderTodo)
-        ) : (
-          <li>No active todos</li>
-        )}
-      </ul>
+      <ul>{activeTodos.length ? activeTodos.map(renderTodo) : <li>No active todos</li>}</ul>
 
       <h3>Completed Todos</h3>
-      <ul>
-        {completedTodos.length ? (
-          completedTodos.map(renderTodo)
-        ) : (
-          <li>No completed todos</li>
-        )}
-      </ul>
+      <ul>{completedTodos.length ? completedTodos.map(renderTodo) : <li>No completed todos</li>}</ul>
     </div>
   );
 }
