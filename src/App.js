@@ -9,15 +9,16 @@ function App() {
     const saved = localStorage.getItem("todos");
     return saved ? JSON.parse(saved) : [];
   });
-
   const [filter, setFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [sortBy, setSortBy] = useState("createdAt");
 
+  // Save todos to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
+  // Add new todo
   const addTodo = (todo) => {
     setTodos([
       ...todos,
@@ -30,6 +31,7 @@ function App() {
     ]);
   };
 
+  // Toggle completion status
   const toggleTodo = (id) => {
     setTodos(
       todos.map((todo) =>
@@ -38,10 +40,12 @@ function App() {
     );
   };
 
+  // Delete todo
   const deleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
+  // Edit todo
   const editTodo = (id, newTitle, newDate) => {
     setTodos(
       todos.map((todo) =>
@@ -50,6 +54,7 @@ function App() {
     );
   };
 
+  // Apply filtering and sorting to todos
   const getFilteredTodos = () => {
     let filtered = todos;
 
@@ -84,6 +89,7 @@ function App() {
     <div className="App">
       <h1>Todo App</h1>
 
+      {/* Filter and Sort Controls */}
       <div className="controls">
         <select value={filter} onChange={(e) => setFilter(e.target.value)}>
           <option value="all">All</option>
@@ -108,6 +114,7 @@ function App() {
         </select>
       </div>
 
+      {/* Components */}
       <TodoStats todos={todos} />
       <TodoForm addTodo={addTodo} />
       <TodoList
